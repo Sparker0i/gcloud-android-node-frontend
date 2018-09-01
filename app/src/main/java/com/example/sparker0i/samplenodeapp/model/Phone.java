@@ -1,10 +1,10 @@
-package com.example.sparker0i.samplenodeapp;
+package com.example.sparker0i.samplenodeapp.model;
 
 public class Phone {
     private String model;
     private String manufacturer;
-    private int price;
-    private int quantity;
+    private Integer price;
+    private Integer quantity;
 
     public String getModel() {
         return model;

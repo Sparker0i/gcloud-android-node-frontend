@@ -1,7 +1,9 @@
-package com.example.sparker0i.samplenodeapp;
+package com.example.sparker0i.samplenodeapp.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.sparker0i.samplenodeapp.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.sparker0i.samplenodeapp;
+package com.example.sparker0i.samplenodeapp.model;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package com.example.sparker0i.samplenodeapp.activity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
@@ -10,6 +11,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Bundle bundle = getIntent().getExtras();
+
         recyclerView = findViewById(R.id.recycler_view);
 
         dialog = new MaterialDialog(this)
@@ -48,12 +53,36 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this , 2);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2 , dpToPx(10) , true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2 , dpToPx() , true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<List<Phone>> call = apiInterface.doGetPhones();
+        Call<List<Phone>> call;
+        if (bundle == null || (bundle.getString("manufacturer") == null && bundle.getString("model") == null && bundle.getInt("min-price") == -1 && bundle.getInt("max-price") == -1))
+            call = apiInterface.doGetPhones();
+        else {
+            String manufacturer , model;
+            Integer min = bundle.getInt("min-price"), max = bundle.getInt("max-price");
+            try {
+                manufacturer = bundle.getString("manufacturer");
+            }
+            catch (NullPointerException ex) {
+                manufacturer = null;
+            }
+            try {
+                model = bundle.getString("model");
+            }
+            catch (NullPointerException ex) {
+                model = null;
+            }
+            if (min == -1)
+                min = null;
+            if (max == -1)
+                max = null;
+            call = apiInterface.doGetPhonesWithQuery(manufacturer , model , min , max);
+        }
+
         call.enqueue(new Callback<List<Phone>>() {
             @Override
             public void onResponse(@NonNull Call<List<Phone>> call, @NonNull Response<List<Phone>> response) {
@@ -95,6 +124,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search:
+                startActivity(new Intent(this , SearchActivity.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void renderPhones() {
         adapter = new PhoneAdapter(this , phones);
         recyclerView.setAdapter(adapter);
@@ -102,9 +147,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.dismiss();
     }
 
-    private int dpToPx(int dp) {
+    private int dpToPx() {
         Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, r.getDisplayMetrics()));
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

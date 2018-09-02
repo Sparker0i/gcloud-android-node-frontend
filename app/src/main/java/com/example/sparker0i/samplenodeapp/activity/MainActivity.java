@@ -12,12 +12,14 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.sparker0i.samplenodeapp.R;
 import com.example.sparker0i.samplenodeapp.api.ApiClient;
 import com.example.sparker0i.samplenodeapp.api.ApiInterface;
 import com.example.sparker0i.samplenodeapp.model.Phone;
 import com.example.sparker0i.samplenodeapp.results.PhoneAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,9 +29,10 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     ApiInterface apiInterface;
-    List<Phone> phones;
+    List<Phone> phones = new ArrayList<>();
     RecyclerView recyclerView;
     PhoneAdapter adapter;
+    MaterialDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +40,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recycler_view);
-        adapter = new PhoneAdapter(this , phones);
+
+        dialog = new MaterialDialog(this)
+                .title(R.string.please_wait , "Please Wait")
+                .message(R.string.loading , "Loading");
+        dialog.show();
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this , 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2 , dpToPx(10) , true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -90,7 +96,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void renderPhones() {
+        adapter = new PhoneAdapter(this , phones);
+        recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        dialog.dismiss();
     }
 
     private int dpToPx(int dp) {

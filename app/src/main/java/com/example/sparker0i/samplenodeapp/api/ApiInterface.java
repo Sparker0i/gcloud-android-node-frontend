@@ -1,7 +1,6 @@
 package com.example.sparker0i.samplenodeapp.api;
 
 import com.example.sparker0i.samplenodeapp.model.Phone;
-import com.example.sparker0i.samplenodeapp.model.PhoneList;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface ApiInterface {
     Call<List<Phone>> doGetPhones();
 
     @GET("/get-items?")
-    Call<PhoneList> doGetPhonesWithQuery(
+    Call<List<Phone>> doGetPhonesWithQuery(
             @Query("manufacturer") String manufacturer,
             @Query("model") String model,
             @Query("min-price") Integer minPrice,

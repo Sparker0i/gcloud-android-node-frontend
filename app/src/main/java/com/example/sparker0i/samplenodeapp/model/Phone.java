@@ -5,6 +5,7 @@ public class Phone {
     private String manufacturer;
     private Integer price;
     private Integer quantity;
+    private String image;
 
     public String getModel() {
         return model;
@@ -36,5 +37,13 @@ public class Phone {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

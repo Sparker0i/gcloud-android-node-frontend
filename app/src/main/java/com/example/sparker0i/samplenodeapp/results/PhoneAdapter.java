@@ -36,7 +36,7 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Phone phone = phones.get(i);
-        myViewHolder.price.setText(phone.getPrice() + "");
+        myViewHolder.price.setText("Rs. " + phone.getPrice());
         myViewHolder.manufacturer.setText(phone.getManufacturer());
         myViewHolder.model.setText(phone.getModel());
         Glide.with(context).load(phone.getImage()).into(myViewHolder.image);

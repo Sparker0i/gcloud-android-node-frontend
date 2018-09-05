@@ -88,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<List<Phone>> call, @NonNull Response<List<Phone>> response) {
                 phones = response.body();
                 if (phones != null) {
-                    for (Phone phone : phones) {
-                        Log.i("Phone Details : " , phone.getManufacturer() + " " + phone.getModel() + " " + phone.getPrice() + " " + phone.getQuantity());
-                    }
                     renderPhones();
                 }
             }

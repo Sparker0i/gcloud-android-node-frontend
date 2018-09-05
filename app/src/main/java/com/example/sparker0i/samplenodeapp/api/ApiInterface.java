@@ -1,6 +1,8 @@
 package com.example.sparker0i.samplenodeapp.api;
 
+import com.example.sparker0i.samplenodeapp.model.Buy;
 import com.example.sparker0i.samplenodeapp.model.Phone;
+import com.example.sparker0i.samplenodeapp.model.Sales;
 
 import java.util.List;
 
@@ -18,4 +20,14 @@ public interface ApiInterface {
             @Query("model") String model,
             @Query("min-price") Integer minPrice,
             @Query("max-price") Integer maxPrice);
+
+    @GET("/getSalesRecords")
+    Call<List<Sales>> getSalesRecords();
+
+    @GET("/buy?")
+    Call<Buy> buyPhone(
+            @Query("model") String model,
+            @Query("user") String username,
+            @Query("qty") Integer quantity
+    );
 }

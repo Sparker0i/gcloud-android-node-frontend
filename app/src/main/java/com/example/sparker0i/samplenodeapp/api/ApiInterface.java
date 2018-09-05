@@ -26,7 +26,7 @@ public interface ApiInterface {
     @GET("/buy?")
     Call<Sales> buyPhone(
             @Query("model") String model,
-            @Query("user") String username,
+            @Query("username") String username,
             @Query("qty") Integer quantity
     );
 }

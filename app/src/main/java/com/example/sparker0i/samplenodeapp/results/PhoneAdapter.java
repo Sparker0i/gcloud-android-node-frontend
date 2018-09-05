@@ -74,6 +74,7 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.MyViewHolder
                 }
             };
             cardView.setOnClickListener(lis);
+            image.setOnClickListener(lis);
         }
     }
 }

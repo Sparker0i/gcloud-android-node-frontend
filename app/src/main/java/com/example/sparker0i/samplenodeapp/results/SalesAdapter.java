@@ -37,6 +37,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.MyViewHolder
         holder.quantity.setText("Quantity: " + sale.quantity);
         holder.invoiceNumber.setText("Invoice Number: " + sale.invoiceNumber);
         holder.model.setText("Model: " + sale.model);
+        holder.customer.setText("Username: " + sale.username);
     }
 
     @Override
@@ -45,13 +46,14 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView model , invoiceNumber , quantity;
+        TextView model , invoiceNumber , quantity , customer;
 
         public MyViewHolder(@NonNull View view) {
             super(view);
             model = view.findViewById(R.id.model);
             invoiceNumber = view.findViewById(R.id.invoiceNumber);
             quantity = view.findViewById(R.id.quantity);
+            customer = view.findViewById(R.id.customer);
         }
     }
 }

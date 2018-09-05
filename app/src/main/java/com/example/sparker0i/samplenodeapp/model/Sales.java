@@ -4,5 +4,6 @@ public class Sales {
     public String model;
     public Integer quantity;
     public String invoiceNumber;
+    public String username;
     public String error;
 }

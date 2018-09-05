@@ -20,7 +20,10 @@ import com.example.sparker0i.samplenodeapp.R;
 import com.example.sparker0i.samplenodeapp.api.ApiClient;
 import com.example.sparker0i.samplenodeapp.api.ApiInterface;
 import com.example.sparker0i.samplenodeapp.model.Phone;
+import com.example.sparker0i.samplenodeapp.model.Sales;
+import com.example.sparker0i.samplenodeapp.results.OnItemClickListener;
 import com.example.sparker0i.samplenodeapp.results.PhoneAdapter;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -133,12 +137,47 @@ public class MainActivity extends AppCompatActivity {
             case R.id.search:
                 startActivity(new Intent(this , SearchActivity.class));
                 return true;
+            case R.id.sales:
+                startActivity(new Intent(this , SalesActivity.class));
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void renderPhones() {
-        adapter = new PhoneAdapter(this , phones);
+        adapter = new PhoneAdapter(this, phones, new OnItemClickListener() {
+            @Override
+            public void onItemClick(Phone phone) {
+                Call<Sales> call = apiInterface.buyPhone(phone.getModel() , "sparker0i" , 2);
+                dialog.show();
+                call.enqueue(new Callback<Sales>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Sales> call, @NonNull Response<Sales> response) {
+                        Sales sale = response.body();
+                        if (sale.error == null) {
+                            // Display Success Dialog
+                            Log.i("Success" , new Gson().toJson(sale));
+                            dialog.dismiss();
+                        }
+                        else {
+                            // Display Failure Dialog
+                            Log.i("Failed" , new Gson().toJson(sale));
+                            dialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Sales> call, @NonNull Throwable t) {
+                        call.cancel();
+                        dialog.dismiss();
+                        t.printStackTrace();
+                    }
+                });
+            }
+        });
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         dialog.dismiss();

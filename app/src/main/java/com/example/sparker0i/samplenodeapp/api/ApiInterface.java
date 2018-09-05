@@ -1,6 +1,5 @@
 package com.example.sparker0i.samplenodeapp.api;
 
-import com.example.sparker0i.samplenodeapp.model.Buy;
 import com.example.sparker0i.samplenodeapp.model.Phone;
 import com.example.sparker0i.samplenodeapp.model.Sales;
 
@@ -25,7 +24,7 @@ public interface ApiInterface {
     Call<List<Sales>> getSalesRecords();
 
     @GET("/buy?")
-    Call<Buy> buyPhone(
+    Call<Sales> buyPhone(
             @Query("model") String model,
             @Query("user") String username,
             @Query("qty") Integer quantity

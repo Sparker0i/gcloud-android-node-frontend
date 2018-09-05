@@ -6,4 +6,9 @@
         android:id="@+id/search"
         app:showAsAction="ifRoom"
         android:icon="@drawable/search" />
+
+    <item android:title="Sales"
+        android:id="@+id/sales"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/money" />
 </menu>
